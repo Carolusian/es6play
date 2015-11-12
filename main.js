@@ -45,6 +45,7 @@
    * @param {object} targetDiv
    */
   function displayResult (resultJson, targetDiv) {
+    targetDiv.innerHTML = ''
     targetDiv.innerHTML += `
       <div class='totalCount'>
         Total count: ${resultJson.total_count}
@@ -55,6 +56,9 @@
       targetDiv.innerHTML += `
         <div class='projectTitle'>
           <a href=${item.html_url} target='_blank'>${item.full_name}</a>
+          <div>
+            ${item.description}
+          </div>
         </div>
       `
     }
@@ -62,7 +66,24 @@
 
   const btnSearch = document.getElementById('btnSearch')
   const inputKeyword = document.getElementById('inputKeyword')
-  const divResult = document.getElementById('divResult')
+
+  const rawDivResult = document.getElementById('divResult')
+  let divResult = new Proxy(rawDivResult, {
+    get: (target, property) => {
+      return target[property]
+    },
+    set: (target, property, value) => {
+      if (property === 'innerHTML') {
+        target.innerHTML = value.replace(/<img[^>]+\>/i, '')
+      } else {
+        target.property = value
+      }
+      return true
+    }
+  })
+
+  // Uncomment the following line to experiment with a less safe DOM element
+  //divResult = document.getElementById('divResult')
 
   btnSearch.onclick = () => {
     const keyword = inputKeyword.value
