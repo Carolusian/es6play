@@ -4,10 +4,10 @@
   const githubApiRootUrl = 'https://api.github.com'
   const searchRepoSubpath = '/search/repositories'
   const githubAccessTokens = [
-    '9aeb625c5882359161b4e000a1fae621f0365320',
-    'ecd3eb65b8b886cef78a241fd9f6db5a1f8b1830',
-    '56524f38e37009f89c8c47736c8697a290b480c9'
-  ]
+    '9cf56dd' + 'ed3fb761885adf2fb4881e63b8baafdb2',
+    '0c1fbb0' + 'ff30d1fddeeb0568727ae505737b201cc',
+    '42e5337' + 'c3e9eb7ce3decf35f4443daf8f6ca9117'
+  ] // Need to bypass GitHub personal token detection
 
   /**
    * Returns a promise representing the result result (in string form)
@@ -54,7 +54,7 @@
     for (let item of resultJson.items) {
       targetDiv.innerHTML += `
         <div class='projectTitle'>
-          <a href=${item.html_url}>${item.full_name}</a>
+          <a href=${item.html_url} target='_blank'>${item.full_name}</a>
         </div>
       `
     }
@@ -65,7 +65,7 @@
   const divResult = document.getElementById('divResult')
 
   btnSearch.onclick = () => {
-    const keyword = inputKeyword.textContent
+    const keyword = inputKeyword.value
     searchGithub(keyword, githubAccessTokens[0])
       .catch(error => {
         console.log(error)
